@@ -35,6 +35,52 @@ add_compile_options(-I${CMAKE_BINARY_DIR})
 
 add_subdirectory(src)
 
+#
+# Install documentation and examples
+#
+
+# Files to distribute in the source package
+install(
+  DIRECTORY example
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/atompaw
+  FILES_MATCHING
+  PATTERN "*.atomicdata"
+  PATTERN "*.input"
+  PATTERN "*.UPF"
+  PATTERN "*paw.abinit"
+  PATTERN "in"
+  PATTERN "Au"
+  REGEX "explore" EXCLUDE
+  REGEX "hf_bessel" EXCLUDE
+  )
+
+install(
+  FILES
+  doc/atompaw-usersguide.pdf
+  doc/atompaw-usersguide.doc
+  doc/ATOMPAW_Explore_Userguide.pdf
+  doc/ATOMPAW_Explore_Userguide.odt
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/atompaw/doc)
+
+install(
+  FILES
+  doc/exploresetup/ParameterExplore.cpp
+  doc/exploresetup/ParameterExploreReadMe.txt
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/atompaw/doc/exploresetup)
+
+install(
+  FILES
+  doc/scripts/explorelogderiv
+  doc/scripts/explorewfn
+  doc/scripts/plotdensity
+  doc/scripts/plotlogderiv
+  doc/scripts/plotpotential
+  doc/scripts/plotwfn
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/atompaw/doc/scripts)
+
+
+
+
 ##################### PRINT CONFIGURE STATUS ######################
 message("//===================================================")
 message("// ${PROJECT_NAME} build configuration:")

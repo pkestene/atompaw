@@ -80,3 +80,8 @@ else()
     ${LAPACK_LIBRARIES})
 endif()
 
+#
+# Install
+#
+install(TARGETS atompaw graphatom
+  RUNTIME)
