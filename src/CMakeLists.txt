@@ -44,6 +44,7 @@ target_sources(libatompaw
   PRIVATE
   ${CMAKE_CURRENT_BINARY_DIR}/pkginfo.f90)
 
+###########################
 add_executable(atompaw "")
 target_sources(atompaw
   PRIVATE
@@ -60,3 +61,22 @@ else()
     libatompaw
     ${LAPACK_LIBRARIES})
 endif()
+
+###########################
+add_executable(graphatom "")
+target_sources(graphatom
+  PRIVATE
+  graphatom.F90)
+
+if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.18)
+  target_link_libraries(graphatom
+    PRIVATE
+    libatompaw
+    LAPACK::LAPACK)
+else()
+  target_link_libraries(graphatom
+    PRIVATE
+    libatompaw
+    ${LAPACK_LIBRARIES})
+endif()
+
