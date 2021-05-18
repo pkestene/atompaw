@@ -53,6 +53,9 @@
 /* Define to 1 if iso_c_binding is available */
 #cmakedefine HAVE_FC_ISO_C_BINDING 1
 
+/* Define to 1 if libxc is available */
+#cmakedefine HAVE_LIBXC 1
+
 /* Name of package */
 #define PACKAGE "@PROJECT_NAME@"
 
