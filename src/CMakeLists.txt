@@ -1,6 +1,6 @@
-add_library(libatompaw "")
+add_library(atompaw "")
 
-target_sources(libatompaw
+target_sources(atompaw
   PRIVATE
   libxc_tools.c
   io_tools.F90
@@ -40,27 +40,35 @@ target_sources(libatompaw
 
 configure_file(pkginfo.f90.cmake pkginfo.f90)
 
-target_sources(libatompaw
+target_sources(atompaw
   PRIVATE
   ${CMAKE_CURRENT_BINARY_DIR}/pkginfo.f90)
 
 ###########################
-add_executable(atompaw "")
-target_sources(atompaw
+add_executable(atompaw_exe "")
+target_sources(atompaw_exe
   PRIVATE
   atompaw_prog.F90)
 
 if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.18)
-  target_link_libraries(atompaw
+  target_link_libraries(atompaw_exe
     PRIVATE
-    libatompaw
+    atompaw
     LAPACK::LAPACK)
 else()
-  target_link_libraries(atompaw
+  target_link_libraries(atompaw_exe
     PRIVATE
-    libatompaw
+    atompaw
     ${LAPACK_LIBRARIES})
 endif()
+
+if (Libxc_FOUND)
+  target_link_libraries(atompaw_exe
+    PRIVATE
+    atompaw
+    Libxc::xc)
+endif()
+
 
 ###########################
 add_executable(graphatom "")
@@ -71,14 +79,22 @@ target_sources(graphatom
 if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.18)
   target_link_libraries(graphatom
     PRIVATE
-    libatompaw
+    atompaw
     LAPACK::LAPACK)
 else()
   target_link_libraries(graphatom
     PRIVATE
-    libatompaw
+    atompaw
     ${LAPACK_LIBRARIES})
 endif()
+
+if (Libxc_FOUND)
+  target_link_libraries(atompaw
+    PRIVATE
+    atompaw
+    Libxc::xc)
+endif()
+
 
 #
 # Install

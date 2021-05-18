@@ -79,6 +79,11 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL XLClang)
   set(FC_XL_CLANG 1)
 endif()
 
+# exchange-correlation library found ?
+if(Libxc_FOUND)
+  set(HAVE_LIBXC 1)
+endif()
+
 # check for iso_c_binding support
 try_compile(
   HAVE_FC_ISO_C_BINDING

@@ -15,6 +15,7 @@ include(GNUInstallDirs)
 
 # external dependencies
 find_package(LAPACK REQUIRED)
+find_package(Libxc)
 
 # set default Fortran compile flags
 include(cmake/compilers.cmake)
@@ -98,3 +99,19 @@ message("  CMake system name (OS) : ${CMAKE_SYSTEM_NAME}")
 message("  Fortran Compiler : ${CMAKE_Fortran_COMPILER_ID} ")
 message("                   : ${CMAKE_Fortran_COMPILER}")
 message("")
+
+# see https://cmake.org/cmake/help/v3.20/module/FindLAPACK.html
+# for an up to data list of possible value for BLA_VENDOR
+# If you want to change blas/lapack implementation to
+# e.g. OpenBLAS
+# just add "-DBLA_VENDOR=OpenBLAS"
+# You may need to modify CMAKE_PREFIX_PATH to specify your OpenBLAS
+# custom installation
+message("Basic Linear Algebra vendor : ${BLA_VENDOR}")
+message("Lapack found     : ${LAPACK_FOUND}")
+message("Lapack libraries : ${LAPACK_LIBRARIES}")
+message("")
+message("Libxc found      : ${Libxc_FOUND}")
+message("Libxc version    : ${Libxc_VERSION}")
+message("Libxc inc dirs   : ${Libxc_INCLUDE_DIRS}")
+message("Libxc libraries  : ${Libxc_LIBRARIES}")
