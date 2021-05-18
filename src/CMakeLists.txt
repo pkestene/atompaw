@@ -89,7 +89,7 @@ else()
 endif()
 
 if (Libxc_FOUND)
-  target_link_libraries(atompaw
+  target_link_libraries(graphatom
     PRIVATE
     atompaw
     Libxc::xc)
