@@ -99,5 +99,13 @@ endif()
 #
 # Install
 #
-install(TARGETS atompaw graphatom
+install(TARGETS atompaw
+  RUNTIME)
+
+# rename exe before install
+set_target_properties(atompaw_exe PROPERTIES OUTPUT_NAME "atompaw")
+install(TARGETS atompaw_exe
+  RUNTIME)
+
+install(TARGETS graphatom
   RUNTIME)
