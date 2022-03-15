@@ -24,9 +24,30 @@ include(prevent_build_in_place)
 # see https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html
 include(GNUInstallDirs)
 
+# see https://cmake.org/cmake/help/latest/command/find_package.html
+find_package(PkgConfig REQUIRED)
+
 # external dependencies
 find_package(LAPACK REQUIRED)
+
+#
+# Libxc
+# 1. use cmake find_package
+# 2. use pkg-config
+#
 find_package(Libxc)
+if (Libxc_FOUND)
+  message("Libxc found via cmake target")
+  set(Libxc_FOUND_with_cmake TRUE)
+else()
+  pkg_check_modules(ATOMPAW_LIBXC QUIET IMPORTED_TARGET libxc)
+  if(ATOMPAW_LIBXC_FOUND)
+    message("Libxc found via pkg-config")
+    set(Libxc_FOUND TRUE)
+    add_library(Libxc::xc ALIAS PkgConfig::ATOMPAW_LIBXC)
+    set(Libxc_FOUND_with_pkgconfig TRUE)
+  endif()
+endif()
 
 # setup libxc name for optionnal substitution in pkgconfig
 if (Libxc_FOUND)
@@ -132,7 +153,14 @@ message("    Lapack headers     : ${LAPACK_HEADER} in ${LAPACK_INCLUDE_DIR}")
 message("    Lapack libraries   : ${LAPACK_LIBRARIES}")
 message("")
 message(STATUS "Libxc config:")
-message("    Libxc found        : ${Libxc_FOUND}")
-message("    Libxc version      : ${Libxc_VERSION}")
-message("    Libxc headers      : ${Libxc_INCLUDE_DIRS}")
-message("    Libxc libraries    : ${Libxc_LIBRARIES}")
+if(Libxc_FOUND_with_cmake)
+  message("    Libxc found        : ${Libxc_FOUND}")
+  message("    Libxc version      : ${Libxc_VERSION}")
+  message("    Libxc headers      : ${Libxc_INCLUDE_DIRS}")
+  message("    Libxc libraries    : ${Libxc_LIBRARIES}")
+else()
+  message("    Libxc found        : ${ATOMPAW_LIBXC_FOUND}")
+  message("    Libxc version      : ${ATOMPAW_LIBXC_VERSION}")
+  message("    Libxc headers      : ${ATOMPAW_LIBXC_CFLAGS}")
+  message("    Libxc libraries    : ${ATOMPAW_LIBXC_LDFLAGS}")
+endif()
