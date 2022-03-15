@@ -7,7 +7,18 @@ project(ATOMPAW
   HOMEPAGE_URL https://github.com/atompaw/atompaw
   DESCRIPTION "Electronic structure calculations (Density-Functional Theory) based on the Projector Augmented-Wave (PAW) method")
 
+# export compiles commands to json (for LSP)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
+
+# subdirectory cmake contains useful macros
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
+# setup build type (Release / Debug)
+include(set_default_build_type)
+set_default_build_type()
+
+# prevent build in place
+include(prevent_build_in_place)
 
 # gnu compatibility,
 # see https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html
@@ -17,11 +28,16 @@ include(GNUInstallDirs)
 find_package(LAPACK REQUIRED)
 find_package(Libxc)
 
+# setup libxc name for optionnal substitution in pkgconfig
+if (Libxc_FOUND)
+  set(Libxc_Optional libxc)
+endif()
+
 # set default Fortran compile flags
-include(cmake/compilers.cmake)
+include(compilers)
 
 # Generate config.h
-include(cmake/generate_config_h.cmake)
+include(generate_config_h)
 
 # for compatibility with autotools,
 # make sure symbol HAVE_CONFIG_H is defined

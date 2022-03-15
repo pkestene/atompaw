@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: @PROJECT_NAME@
+Description: ATOMPAW generates projector and basis functions which are needed for
+performing electronic structure calculations (Density-Functional Theory)
+based on the Projector Augmented Wave (PAW) method.
+Requires: @Libxc_Optional@
+Version: @VERSION@
+Libs: -L${libdir} -latompaw
+Cflags: -I${includedir}

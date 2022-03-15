@@ -95,12 +95,96 @@ if (Libxc_FOUND)
     Libxc::xc)
 endif()
 
-
+##########################################################################
+#
+# Generate CMake own package config file as well as and regular pkg-config
+#
+# and
 #
 # Install
 #
-install(TARGETS atompaw
-  RUNTIME)
+##########################################################################
+
+#
+# Generate configs files
+#
+
+include(CMakePackageConfigHelpers)
+
+# setup some variables
+set(version_config ${PROJECT_BINARY_DIR}/atompaw-config-version.cmake)
+set(project_config_src ${PROJECT_SOURCE_DIR}/src/atompaw-config.cmake.in)
+set(project_config_dst ${PROJECT_BINARY_DIR}/src/atompaw-config.cmake)
+set(targets_export_name atompaw-targets)
+
+# important variables
+set(INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR} CACHE STRING
+  "Installation directory for libraries, relative to ${CMAKE_INSTALL_PREFIX}.")
+
+set(INSTALL_INCLUDEDIR ${CMAKE_INSTALL_INCLUDEDIR} CACHE STRING
+  "Installation directory for include files, relative to ${CMAKE_INSTALL_PREFIX}.")
+
+set(INSTALL_PKGCONFIG_DIR ${CMAKE_INSTALL_LIBDIR}/pkgconfig CACHE PATH
+  "Installation directory for pkgconfig (.pc) files, relative to ${CMAKE_INSTALL_PREFIX}.")
+
+set(INSTALL_CMAKE_DIR ${CMAKE_INSTALL_LIBDIR}/cmake CACHE STRING
+  "Installation directory for cmake files, relative to ${CMAKE_INSTALL_PREFIX}.")
+
+# generate pkg-config file
+include(generate_pkg_config)
+generate_pkg_config(atompaw)
+
+# Generate the version, config and target files into the build directory.
+write_basic_package_version_file(
+  ${version_config}
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY AnyNewerVersion)
+
+# generate cmake my_package-config.cmake file
+configure_package_config_file(
+  ${project_config_src}
+  ${project_config_dst}
+  INSTALL_DESTINATION ${INSTALL_CMAKE_DIR})
+
+#
+# setup the list of targets to install
+#
+set (INSTALL_TARGETS atompaw)
+
+# Use a namespace because CMake provides better diagnostics
+# for namespaced imported targets.
+export(
+  TARGETS ${INSTALL_TARGETS} NAMESPACE atompaw::
+  FILE ${PROJECT_BINARY_DIR}/${targets_export_name}.cmake)
+
+#
+# Install version, config and target files.
+#
+install(
+  FILES ${project_config_dst} ${version_config}
+  DESTINATION ${INSTALL_CMAKE_DIR})
+
+install(
+  EXPORT ${targets_export_name}
+  DESTINATION ${INSTALL_CMAKE_DIR}
+  NAMESPACE atompaw::)
+
+#
+# install the pkg-config file
+#
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/atompaw.pc
+  DESTINATION "${INSTALL_PKGCONFIG_DIR}")
+
+#
+# Install binaries and library
+#
+install(
+  TARGETS atompaw
+  EXPORT ${targets_export_name}
+  LIBRARY DESTINATION ${INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # rename exe before install
 set_target_properties(atompaw_exe PROPERTIES OUTPUT_NAME "atompaw")
