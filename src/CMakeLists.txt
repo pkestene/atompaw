@@ -44,6 +44,12 @@ target_sources(atompaw
   PRIVATE
   ${CMAKE_CURRENT_BINARY_DIR}/pkginfo.f90)
 
+if (Libxc_FOUND)
+  target_link_libraries(atompaw
+    PUBLIC
+    Libxc::xc)
+endif()
+
 ###########################
 add_executable(atompaw_exe "")
 target_sources(atompaw_exe
@@ -65,8 +71,7 @@ endif()
 if (Libxc_FOUND)
   target_link_libraries(atompaw_exe
     PRIVATE
-    atompaw
-    Libxc::xc)
+    atompaw)
 endif()
 
 
@@ -91,8 +96,7 @@ endif()
 if (Libxc_FOUND)
   target_link_libraries(graphatom
     PRIVATE
-    atompaw
-    Libxc::xc)
+    atompaw)
 endif()
 
 ##########################################################################
