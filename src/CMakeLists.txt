@@ -29,7 +29,10 @@ target_sources(atompaw
   pseudo_sub.F90
   pseudo.F90
   pseudodata.F90
+  r2scanmod.F90
   radialdirac.F90
+  radialked.F90
+  splinesolver.F90
   radialsr.F90
   report_mod.F90
   abinitinterface.F90
