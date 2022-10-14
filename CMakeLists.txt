@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 
 project(ATOMPAW
   LANGUAGES C Fortran
-  VERSION 4.1.1.0
+  VERSION 4.2.0.1
   HOMEPAGE_URL https://github.com/atompaw/atompaw
   DESCRIPTION "Electronic structure calculations (Density-Functional Theory) based on the Projector Augmented-Wave (PAW) method")
 
