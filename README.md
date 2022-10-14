@@ -25,7 +25,7 @@ Most of the relevant information can be found on the
 ATOMPAW [official website](http://users.wfu.edu/natalie/papers/pwpaw).
 
 Many documentation files can be found in the doc directory.
-See especially the 
+See especially the
 [~/doc/atompaw-usersguide.pdf](https://github.com/atompaw/atompaw/blob/master/doc/atompaw-usersguide.pdf)
  file.
 
@@ -42,17 +42,41 @@ you will first need to generate the configure script by running
 ./bootstrap.sh
 ```
 (Not needed if you downloaded the sources from ATOMPAW
-[website](http://users.wfu.edu/natalie/papers/pwpaw))  
+[website](http://users.wfu.edu/natalie/papers/pwpaw))
 
-Then run:  
+Then run:
 ```
 ./configure --prefix=PATH/TO/ATOMPAW [options]
 make
 make install
 ```
 Most common options (complete list: `./configure --help`):
-- A `blas/lapack` library is required. If not present in a standard directory, use:  
+- A `blas/lapack` library is required. If not present in a standard directory, use:
   `--with-linalg-prefix=PATH/TO/LINEAR/ALGEBRA`
-- To link with [libxc](https://www.tddft.org/programs/libxc/) collection of 
-  exchange-correlation functionals, use:  
+- To link with [libxc](https://www.tddft.org/programs/libxc/) collection of
+  exchange-correlation functionals, use:
   `--enable-libxc --with-libxc-prefix=PATH/TO/LIBXC`.
+
+### Install with cmake
+
+As an alternative build system, you can use [cmake](https://cmake.org/).
+
+Example build with GNU compiler:
+```shell
+mkdir -p _build/gnu; cd _build/gnu
+cmake ../..
+make -j 6
+```
+
+`atompaw` exe should be located in `_build/gnu/src`
+
+Example build with Intel compiler (OneAPI):
+```shell
+module load compiler mkl
+export CC=icc
+export CX=icpc
+export FC=ifort
+mkdir -p _build/intel; cd _build/intel
+cmake ../..
+make -j 6
+````
